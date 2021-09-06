@@ -1,0 +1,8 @@
+production:
+  adapter: ${DB_ADAPTER}
+  database: ${DB_NAME}
+  host: ${DB_HOST}
+  username: ${DB_USER}
+  password: ${DB_PASSWORD}
+  encoding: utf8
+  schema_search_path: public
