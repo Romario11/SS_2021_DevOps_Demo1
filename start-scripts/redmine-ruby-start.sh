@@ -7,9 +7,9 @@ sudo gem install rails
 sudo bash -c 'curl -o /home/romario/redmine-4.2.2.tar.gz https://www.redmine.org/releases/redmine-4.2.2.tar.gz'
 sudo tar xvf home/romario/redmine-4.2.2.tar.gz -C /home/romario/
 sudo cp home/romario/database.yml /home/romario/redmine-4.2.2/config/
+sudo cp home/romario/configuration.yml /home/romario/redmine-4.2.2/config/
 cd home/romario/redmine-4.2.2
 bundle install --without development test
-bundle exec rake generate_secret_token
 RAILS_ENV=production bundle exec rake db:migrate
 echo en | RAILS_ENV=production bundle exec rake redmine:load_default_data
 sudo mkdir -p tmp tmp/pdf public/plugin_assets

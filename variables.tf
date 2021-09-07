@@ -21,7 +21,9 @@ variable "user_name" {
 variable "ssh_public_key" {
   default = "../gcp-key"
 }
-
+variable "ssh_private_key" {
+  default = "~/.ssh/ssh_GCP_private_key"
+}
 variable "network_name" {
   default = "default"
 }

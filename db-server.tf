@@ -1,6 +1,6 @@
 resource "google_compute_instance" "postgresql_db" {
-  name = "postgres-db"
-  machine_type = "e2-small"
+  name         = "postgres-db"
+  machine_type = "e2-highcpu-2"
 
   boot_disk {
     initialize_params {
@@ -15,9 +15,12 @@ resource "google_compute_instance" "postgresql_db" {
     }
   }
   tags = [
-    "postgres"]
+  "postgres"]
 
-  metadata_startup_script = file(var.db_start_script)
+  metadata_startup_script = templatefile(var.db_start_script, {
+    DB_PASSWORD = var.db_password,
+    DB_USER = var.db_user_name,
+    DB_NAME = var.db_name })
   metadata = {
     ssh-keys = "${var.user_name}:${file(var.ssh_public_key)}"
   }
