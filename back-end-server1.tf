@@ -7,8 +7,8 @@ resource "aws_instance" "back_end_server_1" {
 
   user_data = templatefile(var.redmine_start_script, { USER_NAME = var.user_name, DNS_EFS = aws_efs_file_system.common_file_storage.dns_name })
 
-  vpc_security_group_ids = [aws_security_group.main_firewall.id]
-
+  //vpc_security_group_ids = [aws_security_group.main_firewall.id]
+  vpc_security_group_ids = [aws_security_group.redmine_server_firewall.id]
   provisioner "file" {
     source      = "${path.module}/configs/database.yml"
     destination = "/home/${var.user_name}/database.yml"

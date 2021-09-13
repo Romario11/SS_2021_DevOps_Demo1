@@ -11,5 +11,5 @@ output "RDS_db_adress" {
 }
 
 output "RDS_db_endpoint" {
-  value = aws_db_instance.redmine_rds_db.endpoint
+  value =aws_db_instance.redmine_rds_db.endpoint
 }

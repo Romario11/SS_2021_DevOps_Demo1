@@ -10,6 +10,6 @@ resource "aws_db_instance" "redmine_rds_db" {
   identifier             = "redmine-db"
   multi_az               = false
   port                   = 5432
-  vpc_security_group_ids = [aws_security_group.main_firewall.id]
+  vpc_security_group_ids = [aws_security_group.db_firewall.id]
   skip_final_snapshot    = true
 }
