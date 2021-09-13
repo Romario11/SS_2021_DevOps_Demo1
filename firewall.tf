@@ -1,62 +1,35 @@
-resource "google_compute_firewall" "http" {
-  name    = "http"
-  network = var.network_name
-  allow {
-    protocol = "tcp"
-    ports    = ["80"]
+
+resource "aws_security_group" "main_firewall" {
+  name        = "allow_all"
+  description = "Allow all inbound traffic"
+ // vpc_id = aws_vpc.redmine_vpc.id
+  /* dynamic "ingress" {
+     for_each = ["80","443","5432","8080","3000","22"]
+     content {
+       from_port   = ingress.value
+       to_port     = ingress.value
+       protocol    = "0"
+       cidr_blocks = ["0.0.0.0/0"]
+     }
+   }*/
+  ingress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
   }
-  priority    = "65534"
-  target_tags = ["http"]
+
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+
+  tags = {
+    Name = "allow_all"
+  }
 }
 
-resource "google_compute_firewall" "https" {
-  name    = "https"
-  network = var.network_name
-  allow {
-    protocol = "tcp"
-    ports    = ["443"]
-  }
-  target_tags = ["https"]
-}
-
-resource "google_compute_firewall" "postgres" {
-  name    = "postgres"
-  network = var.network_name
-  allow {
-    protocol = "tcp"
-    ports    = ["5432"]
-  }
-  priority    = "65534"
-  target_tags = ["postgres"]
-
-}
-
-resource "google_compute_firewall" "redmine_point" {
-  name    = "redmine"
-  network = var.network_name
-  allow {
-    protocol = "tcp"
-    ports    = ["3000"]
-  }
-  priority    = "65534"
-  target_tags = ["redmine"]
-}
-
-resource "google_compute_firewall" "icmp" {
-  name    = "icmp"
-  network = var.network_name
-  allow {
-    protocol = "icmp"
-  }
-  target_tags = ["icmp"]
-}
-
-resource "google_compute_firewall" "ssh" {
-  name    = "ssh"
-  network = var.network_name
-  allow {
-    protocol = "tcp"
-    ports    = ["22"]
-  }
-  target_tags = ["ssh"]
-}
