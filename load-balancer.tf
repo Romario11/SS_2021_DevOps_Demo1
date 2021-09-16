@@ -1,47 +1,36 @@
-resource "google_compute_instance" "load_balancer" {
-  name         = "nginx-load-balancer"
-  machine_type = "e2-small"
+resource "aws_instance" "load_balancer" {
+  instance_type = "t3.small"
+  key_name      = aws_key_pair.public_key.key_name
+  ami           = data.aws_ami.ubuntu.id
+  //subnet_id = aws_subnet.main.id
 
-  boot_disk {
-    initialize_params {
-      image = "ubuntu-2004-focal-v20210720"
-    }
-  }
-
-
-  network_interface {
-    network = var.network_name
-    access_config {
-    }
-  }
-  tags = ["http", "https","icmp","ssh"]
+  user_data = templatefile(var.load_balancer_start_script,{USER_NAME=var.user_name})
+  vpc_security_group_ids = [aws_security_group.load-balancer_firewall.id]
+  //vpc_security_group_ids = [aws_security_group.main_firewall.id]
 
   provisioner "file" {
     source      = "${path.module}/configs/nginx.conf"
-    destination = "/home/romario/nginx.conf"
+    destination = "/home/${var.user_name}/nginx.conf"
     connection {
       type        = "ssh"
-      user        = "romario"
-      host        = self.network_interface.0.access_config.0.nat_ip
+      user        = var.user_name
+      host        = self.public_ip
       private_key = file(var.ssh_private_key)
     }
   }
 
-depends_on = [local_file.load_balancer_config]
-
-  metadata_startup_script = file(var.load_balancer_start_script)
-  metadata = {
-    ssh-keys = "${var.user_name}:${file(var.ssh_public_key)}"
+  depends_on = [local_file.load_balancer_config]
+  tags = {
+    "Name"    = "NGINX_load_balancer",
+    "Project" = "Redmine"
   }
 }
 
-
 resource "local_file" "load_balancer_config" {
   content = templatefile("${path.module}/configs/nginx.conf.template", {
-    REDMINE_SERVER1 = google_compute_instance.redmine_server_1.network_interface.0.access_config.0.nat_ip,
-    REDMINE_SERVER2 = google_compute_instance.redmine_server_2.network_interface.0.access_config.0.nat_ip
+    REDMINE_SERVER1 = aws_instance.back_end_server_1.private_ip,
+    REDMINE_SERVER2 = aws_instance.back_end_server_2.private_ip
   })
   filename = "${path.module}/configs/nginx.conf"
-
-
 }
+

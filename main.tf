@@ -1,15 +1,14 @@
 terraform {
   required_providers {
-    google = {
-      source  = "hashicorp/google"
-      version = "3.5.0"
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 3.0"
     }
   }
 }
-
-provider "google" {
-  credentials = file(var.credentials_file)
-  project     = var.project
-  region      = var.region
-  zone        = var.zone
+provider "aws" {
+  region     = var.region
+  access_key =file(var.access_key)
+  secret_key =file(var.secret_key)
 }
+

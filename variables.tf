@@ -1,28 +1,28 @@
-variable "project" {
-  default = "redmine-nginx-postgresql"
+
+variable "access_key" {
+  default = "~/.ssh/aws_access_key"
+}
+variable "secret_key" {
+  default = "~/.ssh/aws_secret_key"
 }
 
-variable "credentials_file" {
-  default = "../redmine-credentials.json"
-}
 
 variable "region" {
-  default = "us-central1"
+  default = "us-east-1"
 }
-
 variable "zone" {
-  default = "us-central1-a"
+  default = "us-east-1b"
 }
 variable "user_name" {
-  default = "romario"
+  default = "ubuntu"
 }
 
 
 variable "ssh_public_key" {
-  default = "../gcp-key"
+  default = "~/.ssh/public-aws"
 }
 variable "ssh_private_key" {
-  default = "~/.ssh/ssh_GCP_private_key"
+  default = "~/.ssh/my-aws-keys.pem"
 }
 variable "network_name" {
   default = "default"
@@ -51,4 +51,7 @@ variable "db_user_name" {
 }
 variable "db_password" {
   default ="my_password"
+}
+variable "ami_ubuntu" {
+  default ="ami-09e67e426f25ce0d7"
 }

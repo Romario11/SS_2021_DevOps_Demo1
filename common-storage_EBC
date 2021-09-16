@@ -1,0 +1,23 @@
+resource "aws_volume_attachment" "ebs_att_be1" {
+  device_name = "/dev/sdh"
+  volume_id   = aws_ebs_volume.common_storage.id
+  instance_id = aws_instance.back_end_server_1.id
+
+}
+resource "aws_volume_attachment" "ebs_att_be2" {
+  device_name = "/dev/sdh"
+  volume_id   = aws_ebs_volume.common_storage.id
+  instance_id = aws_instance.back_end_server_2.id
+}
+
+resource "aws_ebs_volume" "common_storage" {
+  availability_zone = var.zone
+  size              = 5
+  iops = 100
+  type = "io1"
+  multi_attach_enabled = "true"
+tags = {
+    "Name" = "Common storage"
+  }
+}
+
