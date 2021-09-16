@@ -13,6 +13,3 @@ resource "aws_efs_mount_target" "redmine_target" {
   security_groups = [aws_security_group.file_store_firewall.id]
 }
 
-
-
-

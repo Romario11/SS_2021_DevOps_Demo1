@@ -11,7 +11,7 @@ resource "aws_instance" "postgres_db" {
     DB_USER = var.db_user_name,
     DB_NAME = var.db_name })
 
-  vpc_security_group_ids = [aws_security_group.main_firewall.id]
+  vpc_security_group_ids = [aws_security_group.db_firewall.id]
 
   tags = {
     "Name" = "Postgres_DB_Server",

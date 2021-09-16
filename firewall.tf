@@ -84,6 +84,7 @@ resource "aws_security_group" "load-balancer_firewall" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+
   egress {
     from_port   = 0
     to_port     = 0
@@ -113,6 +114,7 @@ resource "aws_security_group" "redmine_server_firewall" {
     to_port     = 3000
     protocol    = "tcp"
     cidr_blocks = [aws_default_vpc.redmine_default_vpc.cidr_block]
+   // cidr_blocks = ["0.0.0.0/0"]
   }
 
 
