@@ -17,7 +17,3 @@ resource "aws_key_pair" "public_key" {
   public_key = file(var.ssh_public_key)
 }
 
-data "aws_availability_zones" "available_zone" {
-  state = "available"
-  //return array of zones
-}

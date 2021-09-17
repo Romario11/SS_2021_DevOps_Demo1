@@ -2,11 +2,10 @@ resource "aws_instance" "load_balancer" {
   instance_type = "t3.small"
   key_name      = aws_key_pair.public_key.key_name
   ami           = data.aws_ami.ubuntu.id
-  //subnet_id = aws_subnet.main.id
+
 
   user_data = templatefile(var.load_balancer_start_script,{USER_NAME=var.user_name})
   vpc_security_group_ids = [aws_security_group.load-balancer_firewall.id]
-  //vpc_security_group_ids = [aws_security_group.main_firewall.id]
 
   provisioner "file" {
     source      = "${path.module}/configs/nginx.conf"

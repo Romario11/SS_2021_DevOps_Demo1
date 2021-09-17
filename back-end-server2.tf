@@ -3,11 +3,11 @@ resource "aws_instance" "back_end_server_2" {
   key_name          = aws_key_pair.public_key.key_name
   ami               = data.aws_ami.ubuntu.id
   availability_zone = var.zone
-  //subnet_id = aws_subnet.main.id
+
 
   user_data = templatefile(var.redmine_start_script, { USER_NAME = var.user_name, DNS_EFS = aws_efs_file_system.common_file_storage.dns_name })
 
-  //vpc_security_group_ids = [aws_security_group.main_firewall.id]
+
   vpc_security_group_ids = [aws_security_group.redmine_server_firewall.id]
 
   provisioner "file" {
@@ -41,7 +41,7 @@ resource "aws_instance" "back_end_server_2" {
       private_key = file(var.ssh_private_key)
     }
   }
-  depends_on = [local_file.db_config_redmine,aws_efs_file_system.common_file_storage]
+  depends_on = [local_file.db_config_redmine,aws_efs_file_system.common_file_storage,aws_instance.back_end_server_1]
   tags = {
     "Name"    = "Redmine_server_2",
     "Project" = "Redmine"
